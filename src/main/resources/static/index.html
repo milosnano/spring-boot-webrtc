@@ -4,11 +4,13 @@
 		<title>WebRTC Demo</title>
 		<link rel="stylesheet" type="text/css" href="/css/styles.css">
 	</head>
-	<body>
+	<body onbeforeunload="disconnect();">
 		<div id="selectedVideosContainer">
 			<video id="remoteView"></video>
 			<video id="selfView"></video>
 		</div>
 		<div id="remoteVideosContainer"></div>
+
+		<script src='/js/main.js'></script>
 	</body>
 </html>
