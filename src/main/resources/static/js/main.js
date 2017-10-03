@@ -1,7 +1,8 @@
 const PORT = 8443;
 const MAPPING = "/room";
 var ws;
-
+var localStream;
+var uuid;
 
 /**
  * this initiate websocket connection
@@ -9,11 +10,19 @@ var ws;
  */
 function init() {
 
-	ws = new WebSocket('wss://' + window.location.hostname + ':' + PORT + MAPPING);
-	ws.onmessage = processWsMessage;
-	ws.onopen = logMessage;
-	ws.onclose = logMessage;
-	ws.onerror = logMessage;
+	// get a local stream, show it in a self-view and add it to be sent
+	navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(function (stream) {
+		console.log("Stream OK");
+		localStream = stream;
+		selfView.srcObject = localStream;
+		ws = new WebSocket('wss://' + window.location.hostname + ':' + PORT + MAPPING);
+		ws.onmessage = processWsMessage;
+		ws.onopen = logMessage;
+		ws.onclose = logMessage;
+		ws.onerror = logMessage;
+	}).catch(function (error) {
+		console.log("Stream NOT OK: " + error.name + ': ' + error.message);
+	});
 
 }
 
@@ -24,6 +33,7 @@ function processWsMessage(message) {
 	switch (signal.type) {
 		case 'login':
 			logMessage(signal);
+			uuid = signal.receiver;
 			break;
 		case 'init':
 			logMessage(signal);
