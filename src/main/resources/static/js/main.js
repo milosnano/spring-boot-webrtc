@@ -1,4 +1,4 @@
-const PORT = 8000;
+const PORT = 8443;
 const MAPPING = "/room";
 var ws;
 
@@ -23,13 +23,13 @@ function processWsMessage(message) {
 	// you have logged in
 	switch (signal.type) {
 		case 'login':
-			console.log(signal);
+			logMessage(signal);
 			break;
 		case 'init':
-			console.log(signal);
+			logMessage(signal);
 			break;
 		case 'logout':
-			console.log(signal);
+			logMessage(signal);
 			break;
 	}
 
