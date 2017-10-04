@@ -15,7 +15,6 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SignalingSocketHandler.class);
 
-	private static final String TYPE_LOGIN = "login";
 	private static final String TYPE_INIT = "init";
 	private static final String TYPE_LOGOUT = "logout";
 
@@ -28,12 +27,6 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		LOG.info("[" + session.getId() + "] Connection established " + session.getId());
-
-		// send the message to the callee original peer with his ID
-		final SignalMessage loginAnswer = new SignalMessage();
-		loginAnswer.setType(TYPE_LOGIN);
-		loginAnswer.setReceiver(session.getId());
-		session.sendMessage(new TextMessage(Utils.getString(loginAnswer)));
 
 		// send the message to all other peers, that new men its being registered
 		final SignalMessage newMenOnBoard = new SignalMessage();

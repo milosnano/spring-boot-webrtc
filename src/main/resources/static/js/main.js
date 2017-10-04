@@ -31,10 +31,6 @@ function processWsMessage(message) {
 
 	// you have logged in
 	switch (signal.type) {
-		case 'login':
-			logMessage(signal);
-			uuid = signal.receiver;
-			break;
 		case 'init':
 			logMessage(signal);
 			break;
