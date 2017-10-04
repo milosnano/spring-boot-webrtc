@@ -8,7 +8,6 @@ const peerConnectionConfig = {
 
 var ws;
 var localStream;
-var myUuid;
 var connections = {};
 var uuidInBig;
 
@@ -41,9 +40,6 @@ function processWsMessage(message) {
     logMessage(signal);
 	// you have logged in
 	switch (signal.type) {
-		case 'login':
-			handleLogin(signal);
-			break;
 		case 'init':
 			handleInit(signal);
 			break;
@@ -63,10 +59,6 @@ function processWsMessage(message) {
 
 }
 
-function handleLogin(signal) {
-    myUuid = signal.receiver;
-}
-
 function handleInit(signal) {
     var peerId = signal.sender;
     var connection = getRTCPeerConnectionObject(peerId);
@@ -77,7 +69,6 @@ function handleInit(signal) {
         console.log('Creating an offer for', peerId);
         sendMessage({
              type: "offer",
-             sender: myUuid,
              receiver: peerId,
              data: sdp
         });
@@ -109,7 +100,6 @@ function handleOffer(signal) {
             connection.setLocalDescription(sdp);
             sendMessage({
                 type: "answer",
-                sender: myUuid,
                 receiver: peerId,
                 data: sdp
             });
@@ -156,7 +146,6 @@ function getRTCPeerConnectionObject(uuid) {
         if (event.candidate) {
           sendMessage({
                 type: "ice",
-                sender: myUuid,
                 receiver: uuid,
                 data: event.candidate
               });
