@@ -20,11 +20,7 @@ function init() {
 function processWsMessage(message) {
 	var signal = JSON.parse(message.data);
 
-	// you have logged in
 	switch (signal.type) {
-		case 'login':
-			console.log(signal);
-			break;
 		case 'init':
 			console.log(signal);
 			break;
